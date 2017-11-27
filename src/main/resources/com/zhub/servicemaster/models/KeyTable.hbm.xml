@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.KeyTable" table="key_table" catalog="enterprisedb" optimistic-lock="version">
+        <id name="keyId" type="java.lang.Integer">
+            <column name="key_id" />
+            <generator class="identity" />
+        </id>
+        <property name="keyCode" type="string">
+            <column name="key_code" length="5" />
+        </property>
+        <property name="keyNumber" type="java.lang.Integer">
+            <column name="key_number" />
+        </property>
+        <property name="keyRemark" type="string">
+            <column name="key_remark" length="45" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="created_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+    </class>
+</hibernate-mapping>

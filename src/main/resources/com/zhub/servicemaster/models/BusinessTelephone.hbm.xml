@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.BusinessTelephone" table="business_telephone" catalog="enterprisedb" optimistic-lock="version">
+        <composite-id name="id" class="com.zhub.servicemaster.models.BusinessTelephoneId">
+            <key-property name="telephoneNumberTelephoneNumberCode" type="string">
+                <column name="telephone_number_telephone_number_code" length="15" />
+            </key-property>
+            <key-property name="businessPartnerBusinessPartnerCode" type="string">
+                <column name="business_partner_business_partner_code" length="15" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="businessPartner" class="com.zhub.servicemaster.models.BusinessPartner" update="false" insert="false" fetch="select">
+            <column name="business_partner_business_partner_code" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="telephoneNumber" class="com.zhub.servicemaster.models.TelephoneNumber" update="false" insert="false" fetch="select">
+            <column name="telephone_number_telephone_number_code" length="15" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

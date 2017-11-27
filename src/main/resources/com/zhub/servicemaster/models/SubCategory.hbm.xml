@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.SubCategory" table="sub_category" catalog="enterprisedb" optimistic-lock="version">
+        <id name="subCategoryCode" type="string">
+            <column name="sub_category_code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <property name="subCategoryName" type="string">
+            <column name="sub_category_name" length="100" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="created_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+        <property name="remarks" type="string">
+            <column name="remarks" length="100" />
+        </property>
+        <property name="categoryCode" type="string">
+            <column name="category_code" length="15" not-null="true" />
+        </property>
+        <property name="printerCode" type="string">
+            <column name="printer_code" length="10" not-null="true" />
+        </property>
+        <set name="items" table="item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="sub_category_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Item" />
+        </set>
+    </class>
+</hibernate-mapping>

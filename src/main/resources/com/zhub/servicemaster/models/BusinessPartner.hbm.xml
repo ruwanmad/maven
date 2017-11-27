@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.BusinessPartner" table="business_partner" catalog="enterprisedb" optimistic-lock="version">
+        <id name="businessPartnerCode" type="string">
+            <column name="business_partner_code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <property name="firstName" type="string">
+            <column name="first_name" length="100" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="100" />
+        </property>
+        <property name="searchKey" type="string">
+            <column name="search_key" length="45" />
+        </property>
+        <property name="nic" type="string">
+            <column name="nic" length="45" />
+        </property>
+        <property name="birthDay" type="date">
+            <column name="birth_day" length="10" />
+        </property>
+        <property name="isCustomer" type="boolean">
+            <column name="isCustomer" not-null="true" />
+        </property>
+        <property name="isSupplier" type="boolean">
+            <column name="isSupplier" not-null="true" />
+        </property>
+        <property name="isEmployee" type="boolean">
+            <column name="isEmployee" not-null="true" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="created_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+        <property name="remarks" type="string">
+            <column name="remarks" length="100" />
+        </property>
+        <set name="businessAddresses" table="business_address" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.BusinessAddress" />
+        </set>
+        <set name="users" table="user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.User" />
+        </set>
+        <set name="businessTelephones" table="business_telephone" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.BusinessTelephone" />
+        </set>
+        <set name="grns" table="grn" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Grn" />
+        </set>
+        <set name="saleEmployees" table="sale_employee" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.SaleEmployee" />
+        </set>
+        <set name="accounts" table="account" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Account" />
+        </set>
+        <set name="accountPostings" table="account_posting" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.AccountPosting" />
+        </set>
+        <set name="sales" table="sale" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Sale" />
+        </set>
+        <set name="vehicles" table="vehicle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="business_partner_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Vehicle" />
+        </set>
+    </class>
+</hibernate-mapping>

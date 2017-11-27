@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.Uom" table="uom" catalog="enterprisedb" optimistic-lock="version">
+        <id name="uomCode" type="string">
+            <column name="uom_code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <property name="uomSymble" type="string">
+            <column name="uom_symble" length="10" />
+        </property>
+        <property name="uomName" type="string">
+            <column name="uom_name" length="45" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="created_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+        <property name="remarks" type="string">
+            <column name="remarks" length="100" />
+        </property>
+        <set name="itemsForBuyingUom" table="item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="buying_uom" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Item" />
+        </set>
+        <set name="itemsForSellingUom" table="item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="selling_uom" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Item" />
+        </set>
+        <set name="uomConversionsForUomUomCodeFrom" table="uom_conversion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="uom_uom_code_from" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.UomConversion" />
+        </set>
+        <set name="uomConversionsForUomUomCodeTo" table="uom_conversion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="uom_uom_code_to" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.UomConversion" />
+        </set>
+        <set name="bomItems" table="bom_item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="uom_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.BomItem" />
+        </set>
+    </class>
+</hibernate-mapping>

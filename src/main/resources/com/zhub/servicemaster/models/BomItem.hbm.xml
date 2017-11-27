@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.BomItem" table="bom_item" catalog="enterprisedb" optimistic-lock="version">
+        <id name="bomItemCode" type="string">
+            <column name="bom_item_code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="bom" class="com.zhub.servicemaster.models.Bom" fetch="select">
+            <column name="bom_code" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="item" class="com.zhub.servicemaster.models.Item" fetch="select">
+            <column name="item_code" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="uom" class="com.zhub.servicemaster.models.Uom" fetch="select">
+            <column name="uom_code" length="15" not-null="true" />
+        </many-to-one>
+        <property name="bomItemQuantity" type="java.lang.Float">
+            <column name="bom_item_quantity" precision="12" scale="0" />
+        </property>
+        <property name="unitPrice" type="java.lang.Float">
+            <column name="unit_price" precision="12" scale="0" />
+        </property>
+        <property name="sellingPrice" type="java.lang.Float">
+            <column name="selling_price" precision="12" scale="0" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="created_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+        <property name="remark" type="string">
+            <column name="remark" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

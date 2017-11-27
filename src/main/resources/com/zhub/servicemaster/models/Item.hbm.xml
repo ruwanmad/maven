@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 27, 2017 2:54:47 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.zhub.servicemaster.models.Item" table="item" catalog="enterprisedb" optimistic-lock="version">
+        <id name="itemCode" type="string">
+            <column name="item_code" length="15" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="item" class="com.zhub.servicemaster.models.Item" fetch="select">
+            <column name="base_item" length="15" />
+        </many-to-one>
+        <many-to-one name="itemBrand" class="com.zhub.servicemaster.models.ItemBrand" fetch="select">
+            <column name="brand_code" length="15" />
+        </many-to-one>
+        <many-to-one name="subCategory" class="com.zhub.servicemaster.models.SubCategory" fetch="select">
+            <column name="sub_category_code" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="uomByBuyingUom" class="com.zhub.servicemaster.models.Uom" fetch="select">
+            <column name="buying_uom" length="15" not-null="true" />
+        </many-to-one>
+        <many-to-one name="uomBySellingUom" class="com.zhub.servicemaster.models.Uom" fetch="select">
+            <column name="selling_uom" length="15" not-null="true" />
+        </many-to-one>
+        <property name="itemName" type="string">
+            <column name="item_name" length="100" not-null="true" />
+        </property>
+        <property name="printName" type="string">
+            <column name="print_name" length="45" />
+        </property>
+        <property name="searchKey" type="string">
+            <column name="search_key" length="45" />
+        </property>
+        <property name="issueMethod" type="string">
+            <column name="issue_method" length="10" />
+        </property>
+        <property name="reorderQuantity" type="java.lang.Float">
+            <column name="reorder_quantity" precision="12" scale="0" />
+        </property>
+        <property name="itemQuantity" type="java.lang.Float">
+            <column name="item_quantity" precision="12" scale="0" />
+        </property>
+        <property name="isPhysical" type="java.lang.Integer">
+            <column name="isPhysical" />
+        </property>
+        <property name="isActive" type="java.lang.Integer">
+            <column name="isActive" />
+        </property>
+        <property name="fromBom" type="java.lang.Boolean">
+            <column name="from_bom" />
+        </property>
+        <property name="creadetDate" type="date">
+            <column name="creadet_date" length="10" />
+        </property>
+        <property name="createdTime" type="time">
+            <column name="created_time" length="8" />
+        </property>
+        <property name="createdUser" type="java.lang.Integer">
+            <column name="created_user" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="modified_date" length="10" />
+        </property>
+        <property name="modifiedTime" type="time">
+            <column name="modified_time" length="8" />
+        </property>
+        <property name="modifiedUser" type="java.lang.Integer">
+            <column name="modified_user" />
+        </property>
+        <property name="remark" type="string">
+            <column name="remark" length="100" />
+        </property>
+        <property name="rackSlotCode" type="string">
+            <column name="rack_slot_code" length="10" not-null="true" />
+        </property>
+        <property name="issueMethodId" type="int">
+            <column name="issue_method_id" not-null="true" />
+        </property>
+        <property name="itemTypeCode" type="string">
+            <column name="item_type_code" length="15" not-null="true" />
+        </property>
+        <set name="items" table="item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="base_item" length="15" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Item" />
+        </set>
+        <set name="boms" table="bom" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Bom" />
+        </set>
+        <set name="grnLines" table="grn_line" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.GrnLine" />
+        </set>
+        <set name="sellingPrices" table="selling_price" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.SellingPrice" />
+        </set>
+        <set name="saleItems" table="sale_item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.SaleItem" />
+        </set>
+        <set name="stocks" table="stock" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.Stock" />
+        </set>
+        <set name="bomItems" table="bom_item" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="item_code" length="15" not-null="true" />
+            </key>
+            <one-to-many class="com.zhub.servicemaster.models.BomItem" />
+        </set>
+    </class>
+</hibernate-mapping>
