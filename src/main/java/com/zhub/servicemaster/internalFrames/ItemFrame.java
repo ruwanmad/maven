@@ -10,6 +10,7 @@ import com.zhub.servicemaster.dialogs.ConfirmationDialog;
 import com.zhub.servicemaster.dialogs.InformationDialog;
 import com.zhub.servicemaster.forms.MainFrame;
 import com.zhub.servicemaster.functions.AutoCompletion;
+import com.zhub.servicemaster.functions.StringValidateDocumentFilter;
 import com.zhub.servicemaster.functions.UpperCaseDocumentFilter;
 import com.zhub.servicemaster.guiFunctions.ButtonFunctions;
 import com.zhub.servicemaster.keys.KeyCodeFunctions;
@@ -23,6 +24,7 @@ import com.zhub.servicemaster.models.SubCategory;
 import com.zhub.servicemaster.models.Uom;
 import com.zhub.servicemaster.utils.HibernateUtil;
 import com.zhub.servicemaster.views.ItemView;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -119,6 +121,8 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         cbxFromBom = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         txtSearchKey = new javax.swing.JTextField();
+        txtPrintName = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         miEdit.setText("Edit");
         miEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -173,10 +177,15 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         jLabel14.setText("Remarks :");
 
         txtItemName.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtItemName.setNextFocusableComponent(txtSearchKey);
+        txtItemName.setNextFocusableComponent(txtPrintName);
+        txtItemName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtItemNameKeyReleased(evt);
+            }
+        });
 
         txtSellingQuantity.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtSellingQuantity.setNextFocusableComponent(cmbSellingUOM);
+        txtSellingQuantity.setNextFocusableComponent(txtReorderQuantity);
 
         txtReorderQuantity.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtReorderQuantity.setNextFocusableComponent(cmbIssueMethod);
@@ -200,16 +209,16 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         jLabel18.setText("Selling UOM :");
 
         cmbSubCategory.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbSubCategory.setNextFocusableComponent(cmbRackSlot);
+        cmbSubCategory.setNextFocusableComponent(cmbBaseItem);
 
         cmbRackSlot.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbRackSlot.setNextFocusableComponent(cmbItemType);
+        cmbRackSlot.setNextFocusableComponent(cmbBrand);
 
         cmbBuyingUOM.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         cmbBuyingUOM.setNextFocusableComponent(cmbSubCategory);
 
         cmbSellingUOM.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbSellingUOM.setNextFocusableComponent(txtReorderQuantity);
+        cmbSellingUOM.setNextFocusableComponent(cmbBuyingUOM);
 
         txtRemarks.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtRemarks.setNextFocusableComponent(txtSellingPrice);
@@ -219,13 +228,13 @@ public class ItemFrame extends javax.swing.JInternalFrame {
 
         cmbBrand.setEditable(true);
         cmbBrand.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbBrand.setNextFocusableComponent(cmbBuyingUOM);
+        cmbBrand.setNextFocusableComponent(txtRemarks);
 
         jLabel20.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel20.setText("Issue Method :");
 
         cmbIssueMethod.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbIssueMethod.setNextFocusableComponent(cmbBrand);
+        cmbIssueMethod.setNextFocusableComponent(cmbSellingUOM);
 
         btnReset.setBackground(new java.awt.Color(150, 255, 150));
         btnReset.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -446,7 +455,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSellingPriceRemark)
+                .addComponent(txtSellingPriceRemark, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -476,11 +485,11 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         jLabel24.setText("Item Type :");
 
         cmbItemType.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbItemType.setNextFocusableComponent(cmbBaseItem);
+        cmbItemType.setNextFocusableComponent(cmbRackSlot);
 
         cmbBaseItem.setEditable(true);
         cmbBaseItem.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        cmbBaseItem.setNextFocusableComponent(txtRemarks);
+        cmbBaseItem.setNextFocusableComponent(cmbItemType);
 
         jLabel25.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel25.setText("Base Item :");
@@ -496,6 +505,12 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         txtSearchKey.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtSearchKey.setNextFocusableComponent(txtSellingQuantity);
 
+        txtPrintName.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtPrintName.setNextFocusableComponent(txtSearchKey);
+
+        jLabel9.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel9.setText("Print Name :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -509,9 +524,6 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                         .addGap(10, 10, 10))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(84, 566, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -524,42 +536,47 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbItemType, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addComponent(txtReorderQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbSellingUOM, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtItemName)
+                            .addComponent(txtItemCode, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCodeSerach, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtRemarks, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPrintName))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel14)
+                                    .addGap(508, 508, 508))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel5)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel1)
-                                                .addComponent(jLabel2)))
-                                        .addComponent(jLabel19))
+                                    .addComponent(jLabel24)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cmbItemType, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(102, 102, 102)
+                                    .addComponent(txtReorderQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel18)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(cmbSellingUOM, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtRemarks, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(txtItemName)
-                                                .addComponent(txtItemCode, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
-                                            .addGap(4, 4, 4)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(btnCodeSerach, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(btnNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addComponent(jLabel5)
+                                                .addComponent(jLabel19))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(txtSearchKey, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(cmbBrand, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -596,15 +613,15 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(jLabel16)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(cmbRackSlot, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(102, 102, 102)
-                                    .addComponent(cmbSubCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel15)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                                    .addComponent(cmbRackSlot, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(102, 102, 102)
+                                            .addComponent(cmbSubCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel15)))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel2, jLabel20, jLabel24, jLabel25, jLabel3, jLabel4, jLabel5});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel2, jLabel20, jLabel24, jLabel25, jLabel3, jLabel4, jLabel5, jLabel9});
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCodeSerach, btnNameSearch});
 
@@ -624,8 +641,22 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCodeSerach, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrintName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -640,62 +671,51 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                             .addComponent(jLabel24)
                             .addComponent(cmbItemType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearchKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtReorderQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtItemCode, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCodeSerach, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSellingQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel20)
+                            .addComponent(cmbIssueMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSearchKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtReorderQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtSellingQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel20)
-                                    .addComponent(cmbIssueMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel17)
-                                    .addComponent(cmbBuyingUOM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cmbBaseItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cmbRackSlot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbxIsPhysical, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel19)
-                                        .addComponent(cmbBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbxIsActive, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel8)
-                                    .addComponent(cbxFromBom, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                            .addComponent(jLabel17)
+                            .addComponent(cmbBuyingUOM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cmbBaseItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbRackSlot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbxIsPhysical, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel19)
+                                .addComponent(cmbBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbxIsActive, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel8)
+                            .addComponent(cbxFromBom, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addSellsPricePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sellingPricePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel14)
                     .addComponent(txtRemarks, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addSellsPricePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sellingPricePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -754,7 +774,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
 
         Criteria itemTypeCriteria = session.createCriteria(ItemType.class).addOrder(Order.asc("itemTypeCode"));
         List<ItemType> itemTypes = itemTypeCriteria.list();
-         cmbItemType.addItem("");
+        cmbItemType.addItem("");
         for (ItemType itemType : itemTypes) {
             cmbItemType.addItem(itemType.getItemTypeName());
         }
@@ -770,7 +790,8 @@ public class ItemFrame extends javax.swing.JInternalFrame {
 
         AutoCompletion.enable(cmbBaseItem, cmbItemType);
         AutoCompletion.enable(cmbBrand, txtRemarks);
-        ((AbstractDocument)txtSearchKey.getDocument()).setDocumentFilter(new UpperCaseDocumentFilter());
+        ((AbstractDocument) txtSearchKey.getDocument()).setDocumentFilter(new UpperCaseDocumentFilter());
+        ((AbstractDocument) txtItemName.getDocument()).setDocumentFilter(new StringValidateDocumentFilter());
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnResetMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnResetMouseEntered
@@ -804,7 +825,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                         InformationDialog.showMessageBox("Item name already exists.", "Exist", this);
                     } else {
                         KeyCodeFunctions keyCodeFunctions = new KeyCodeFunctions();
-                        this.createNewItemOrUpdate(keyCodeFunctions.getKey("ITM", "Item codes"), false);
+                        this.saveOrUpdateItem(keyCodeFunctions.getKey("ITM", "Item codes"), false);
                     }
                 } else {
                     List itemByCode = this.getItemByCode(txtItemCode.getText().trim().toUpperCase(), false);
@@ -813,7 +834,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
                     } else {
                         ConfirmationDialog.showMessageBox("Do you want to update?", "Update", this);
                         if (ConfirmationDialog.option == ConfirmationDialog.YES_OPTION) {
-                            this.createNewItemOrUpdate(txtItemCode.getText().trim().toUpperCase(), true);
+                            this.saveOrUpdateItem(txtItemCode.getText().trim().toUpperCase(), true);
                         }
                     }
                 }
@@ -941,6 +962,28 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_miEditActionPerformed
 
+    private void txtItemNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtItemNameKeyReleased
+        int keyCode = evt.getKeyCode();
+        String value = txtPrintName.getText();
+        if (keyCode == KeyEvent.VK_BACK_SPACE) {
+            value = value.substring(0, value.length() - 1);
+        } else {
+            char charactor = evt.getKeyChar();
+            if (Character.isAlphabetic(charactor) || 
+                    Character.isDigit(charactor) || 
+                    charactor == ' ' || 
+                    charactor == '-' ||
+                    charactor == '\'' ||
+                    charactor == '"') {
+                value = value + charactor;
+            } else {
+                System.out.println("Not allowed");
+            }
+        }
+
+        txtPrintName.setText(value);
+    }//GEN-LAST:event_txtItemNameKeyReleased
+
     public void clearAll() {
         this.setItemCodeEditable(true);
         txtItemCode.setText("");
@@ -1019,7 +1062,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
         return list;
     }
 
-    private void createNewItemOrUpdate(String strItemCode, boolean bUpdate) {
+    private void saveOrUpdateItem(String strItemCode, boolean bUpdate) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -1077,6 +1120,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
             }
         }
 
+        item.setPrintName(txtPrintName.getText().trim());
         item.setSearchKey(txtSearchKey.getText().trim().toUpperCase());
         item.setItemQuantity(Float.parseFloat(txtSellingQuantity.getText().trim()));
         item.setReorderQuantity(Float.parseFloat(txtReorderQuantity.getText().trim()));
@@ -1284,6 +1328,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblID;
     private javax.swing.JMenuItem miEdit;
     private javax.swing.JScrollPane scrollPane;
@@ -1292,6 +1337,7 @@ public class ItemFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu tblSellingPricesPopup;
     private javax.swing.JTextField txtItemCode;
     private javax.swing.JTextField txtItemName;
+    private javax.swing.JTextField txtPrintName;
     private javax.swing.JTextField txtRemarks;
     private javax.swing.JTextField txtReorderQuantity;
     private javax.swing.JTextField txtSearchKey;
